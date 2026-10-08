@@ -1,0 +1,3 @@
+[submodule ".upstream/fframes"]
+	path = .upstream/fframes
+	url = https://github.com/dmtrKovalenko/fframes.git

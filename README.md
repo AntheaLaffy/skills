@@ -4,6 +4,8 @@
 
 ## 内容
 
+- `fframes-video/`：本地安装的视频生成技能；上游通过 `.upstream/fframes` Git submodule 管理。
+
 - [`codemap/`](codemap/)：生成和维护分层 `CODEMAP.md`，按任务路由代码阅读范围。
 - [`project-maintenance/`](project-maintenance/)：在功能开发、重构和后端迁移后同步代码地图、实现、测试、构建入口和文档，并处理已退役内容。
 - [`performance-gradient-optimization/`](performance-gradient-optimization/)：用可复现实验优化延迟、吞吐、CPU、内存、I/O、能耗和成本。
@@ -21,6 +23,28 @@ ln -s /home/fuurin/code/skills ~/.claude/skills
 上述命令要求目标路径不存在；已有目录须先清理，避免创建嵌套链接。其他 agent 同样将其用户级 skills 路径直接链接到这里，不再维护独立副本。
 
 `the missing semester/` 保留课程源码结构，根目录的相对符号链接让只扫描一级目录的工具也能发现这些 skills。`.system/` 是 Codex 管理的内置 skills，不纳入版本控制。插件内置 skills 与各项目专属 skills 仍由各自来源管理。
+
+## fframes 上游技能
+
+Git 仓库只记录 `.upstream/fframes` 子模块的上游地址和提交版本，不重复提交技能副本。本地 `fframes-video/` 是实际安装的技能目录，已加入 `.gitignore`，各 agent 通过现有 skills 目录链接共用它。
+
+新机器初始化子模块并安装技能：
+
+```bash
+git submodule update --init --depth 1 .upstream/fframes
+cp -a .upstream/fframes/skills/fframes-video ./fframes-video
+```
+
+更新上游并同步本地技能：
+
+```bash
+git -C .upstream/fframes fetch origin main
+git -C .upstream/fframes checkout --detach origin/main
+cp -a .upstream/fframes/skills/fframes-video/. ./fframes-video/
+git add .upstream/fframes
+```
+
+更新前保存本地自定义改动，并核对上游删除的文件；复制命令不会清除旧文件。审查后提交新的子模块指针，其他机器用 `git submodule update --init` 获取该版本，再同步本地技能。可选用 `git -C .upstream/fframes sparse-checkout set skills/fframes-video` 减少检出的文件。
 
 ## 维护约定
 
