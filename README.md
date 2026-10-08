@@ -11,14 +11,16 @@
 
 ## 安装
 
-将需要的 skill 目录链接或复制到工具的 skill 目录。例如：
+所有 agent 的用户级 skills 目录统一链接到本仓库，例如：
 
 ```bash
-ln -s "$PWD/codemap" ~/.codex/skills/codemap
-ln -s "$PWD/project-maintenance" ~/.codex/skills/project-maintenance
+ln -s /home/fuurin/code/skills ~/.codex/skills
+ln -s /home/fuurin/code/skills ~/.claude/skills
 ```
 
-Claude Code 可以使用 `~/.claude/skills/`；如果两个工具共享安装目录，保持同一个源码目录，避免副本漂移。
+上述命令要求目标路径不存在；已有目录须先清理，避免创建嵌套链接。其他 agent 同样将其用户级 skills 路径直接链接到这里，不再维护独立副本。
+
+`the missing semester/` 保留课程源码结构，根目录的相对符号链接让只扫描一级目录的工具也能发现这些 skills。`.system/` 是 Codex 管理的内置 skills，不纳入版本控制。插件内置 skills 与各项目专属 skills 仍由各自来源管理。
 
 ## 维护约定
 

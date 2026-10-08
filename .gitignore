@@ -22,3 +22,6 @@ coverage/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Agent-managed built-in skills
+.system/
