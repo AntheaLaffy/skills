@@ -156,6 +156,46 @@ def write_state(root: Path, state: dict) -> None:
             temporary.unlink()
 
 
+def paginate_report(report: dict, max_paths: int, offset: int) -> dict:
+    # Keep full counts and review status; pagination is presentation, not scope.
+    entries = [
+        (group, kind, name)
+        for group in ("maps", "files")
+        for kind, names in report["changes"][group].items()
+        for name in names
+    ]
+    entries.extend(("separate_checkouts", "", item)
+                   for item in report["separate_checkouts"])
+    page = entries[offset:offset + max_paths]
+    limited = {
+        **report,
+        "change_counts": {
+            group: {kind: len(names) for kind, names in changes.items()}
+            for group, changes in report["changes"].items()
+        },
+        "separate_checkout_count": len(report["separate_checkouts"]),
+        "changes": {
+            group: {kind: [] for kind in changes}
+            for group, changes in report["changes"].items()
+        },
+        "separate_checkouts": [],
+        "pagination": {
+            "offset": offset, "limit": max_paths, "total": len(entries),
+            "returned": len(page), "omitted": len(entries) - len(page),
+            "truncated": len(page) < len(entries),
+            "next_offset": offset + len(page) if page and (
+                offset + len(page) < len(entries)
+            ) else None,
+        },
+    }
+    for group, kind, item in page:
+        if group == "separate_checkouts":
+            limited[group].append(item)
+        else:
+            limited["changes"][group][kind].append(item)
+    return limited
+
+
 def print_report(report: dict, as_json: bool) -> None:
     if as_json:
         print(json.dumps(report, indent=2, sort_keys=True))
@@ -183,7 +223,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=("inspect", "record", "check"))
     parser.add_argument("--root", required=True, help="Path inside the intended Git project")
-    parser.add_argument("--json", action="store_true", help="Emit complete structured output")
+    parser.add_argument("--json", action="store_true", help="Emit structured output; complete unless --max-paths is set")
+    parser.add_argument("--max-paths", type=int, help="Limit total JSON change/checkout entries; 0 emits counts only")
+    parser.add_argument("--offset", type=int, default=0, help="Skip entries when using --max-paths")
     parser.add_argument("--reviewed", action="store_true", help="Record only after actual review")
     parser.add_argument("--exclude", action="append", help="Replace custom root-relative exclusions")
     parser.add_argument("--clear-excludes", action="store_true")
@@ -196,6 +238,10 @@ def main() -> int:
         parser.error("--reviewed applies only to record")
     if args.exclude is not None and args.clear_excludes:
         parser.error("Use --exclude or --clear-excludes, not both")
+    if args.max_paths is not None and (not args.json or args.max_paths < 0):
+        parser.error("--max-paths requires --json and a nonnegative limit")
+    if args.offset < 0 or (args.offset and args.max_paths is None):
+        parser.error("--offset requires --max-paths and a nonnegative offset")
     try:
         root = repo_root(args.root)
         old = load_state(root)
@@ -226,12 +272,22 @@ def main() -> int:
             }
             write_state(root, state)
             status = "recorded-reviewed-state"
-        print_report({
+        report = {
             "root": str(root), "status": status, "scope_changed": scope_changed,
             "counts": {group: len(current[group]) for group in ("files", "maps")},
             "changes": changes, "separate_checkouts": current["separate_checkouts"],
             "excludes": patterns, "include_generated": include_generated,
-        }, args.json)
+        }
+        if args.max_paths is not None:
+            snapshot = {
+                "current": current, "reviewed": old,
+                "excludes": patterns, "include_generated": include_generated,
+            }
+            report["report_id"] = hashlib.sha256(
+                json.dumps(snapshot, sort_keys=True).encode()
+            ).hexdigest()
+            report = paginate_report(report, args.max_paths, args.offset)
+        print_report(report, args.json)
         return int(needs_review) if args.action == "check" else 0
     except (OSError, ValueError, UnicodeError) as error:
         if args.json:

@@ -2,6 +2,8 @@
 
 只读取本次涉及的部分。使用项目已有命令、锁定版本、功能组合和支持平台，先记录已存在的失败，再核对本次差异。缺少完成验证所必需的工具或数据时补齐并执行；不能把未验证写成通过。
 
+将核对出的契约写回受影响地图：ABI/FFI 的真实符号、调用约定、布局/偏移、所有权及回调线程；UI 的事件到状态到渲染/推理路径；模型的 shape、dtype、布局、量化和转换边界。
+
 ## 语言与接口边界
 
 | 场景 | 需要的证据 |
@@ -33,6 +35,12 @@ python3 <skill-dir>/scripts/maintenance_state.py inspect --root . --json
 python3 <skill-dir>/scripts/maintenance_state.py record --root . --reviewed
 python3 <skill-dir>/scripts/maintenance_state.py check --root .
 ```
+
+agent 首次读取可用 `inspect --root . --json --max-paths 20`；只取计数用 `--max-paths 0`。限量 JSON 的 `change_counts` 和 `separate_checkout_count` 始终覆盖完整扫描，`changes` 与 `separate_checkouts` 只包含本页。分页顺序为地图的增/改/删、其他文件的增/改/删、独立 checkout，各组按路径排序。
+
+按 `pagination.next_offset` 继续传入 `--offset`，并核对各页 `report_id` 一致；内容、审查记录或范围变化时重新取页。`pagination.total/returned/omitted/truncated` 明示完整量与本页量；计数模式不提供下一页，应改用正数限量。分页限制路径条目数量，路径长度和范围元数据仍会影响输出大小。省略 `--max-paths` 恢复原有完整 JSON；文本输出仍使用原有摘要。
+
+输出限量不改变扫描范围、审查记录或 `check` 退出码。不要把本页空列表、最后一页或截断结果当成无变更；以完整状态、计数和实际审查为准。`--root` 会解析为 Git 顶层，单个包的任务应再按地图与任务路径筛选，不能把仓库级记录说成仅审查了当前包。
 
 - 扫描 Git 跟踪文件及未被忽略的新增文件，比较实际内容哈希；检测修改、增删、重命名及地图本身的变化。模式或时间戳相同的内容修改仍会触发。
 - tracked fixture、lockfile、配置与文档也在范围内。`CODEMAP.md`、`codemap.md` 和 `*.analysis.md` 在报告中单列；记录文件自身不进入指纹。
