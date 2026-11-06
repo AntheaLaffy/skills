@@ -26,5 +26,9 @@ Thumbs.db
 # Agent-managed built-in skills
 .system/
 
+# Machine-local study and connection navigation
+/exam-authoring/references/local-library.md
+/tomato-todo/references/local-context.md
+
 # Locally installed from the fframes submodule
 /fframes-video/

@@ -1,0 +1,77 @@
+{
+  "entries": {
+    "0": {
+      "uid": 0,
+      "key": [
+        "战斗",
+        "拔剑",
+        "杀气",
+        "神通",
+        "交手",
+        "生死"
+      ],
+      "keysecondary": [
+        "林渊",
+        "主角"
+      ],
+      "comment": "林渊-太玄剑典招式与战力上限约束 (高张力战斗专用)",
+      "content": "[Combat System & Invariants]:\n1. 林渊当前境界为【化神初期】，体内真元上限仅够挥出三次【太玄断空剑】。\n2. 剑法核心：快准凌厉，无冗余剑花，破空必带罡风嘶鸣与温度骤降（冰霜凝结）。\n3. 限制法则：强行越阶催动第四剑必导致经脉逆流反噬，神识剧痛。战斗时必须精确描写肌肉受力、剑刃震颤手感与地面被剑气撕裂的物理视听细节，禁止战力无故暴增。",
+      "constant": false,
+      "selective": true,
+      "order": 120,
+      "position": 4,
+      "disable": false,
+      "displayIndex": 0,
+      "addMemo": true,
+      "group": "battle_system",
+      "groupOverride": false,
+      "groupWeight": 100,
+      "sticky": 3,
+      "cooldown": 5,
+      "delay": 0,
+      "probability": 100,
+      "depth": 3,
+      "useProbability": true,
+      "role": null,
+      "vectorized": false,
+      "preventRecursion": true,
+      "excludeRecursion": false,
+      "delayUntilRecursion": false,
+      "scanDepth": 3
+    },
+    "1": {
+      "uid": 1,
+      "key": [
+        "宗门",
+        "青云宗",
+        "戒律堂",
+        "长老"
+      ],
+      "keysecondary": [],
+      "comment": "世界背景-青云宗政治格局与门规暗流",
+      "content": "[Faction & Politics]:\n青云宗表面清正，实则戒律堂与丹霞峰暗中夺权。戒律堂黑袍使者行事阴鸷，佩戴玄铁锁链与拘魂铃；门规严禁私斗，违者废去一阶修为锁入镇魔渊。",
+      "constant": false,
+      "selective": false,
+      "order": 80,
+      "position": 1,
+      "disable": false,
+      "displayIndex": 1,
+      "addMemo": true,
+      "group": "world_lore",
+      "groupOverride": false,
+      "groupWeight": 100,
+      "sticky": 2,
+      "cooldown": 8,
+      "delay": 0,
+      "probability": 100,
+      "depth": 5,
+      "useProbability": true,
+      "role": null,
+      "vectorized": false,
+      "preventRecursion": false,
+      "excludeRecursion": false,
+      "delayUntilRecursion": false,
+      "scanDepth": 2
+    }
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "信息调研与核查"
+  short_description: "针对真实信息追溯原始来源，核对时间与统计口径，保留冲突和未知项"
+  default_prompt: "使用 $research-verification 调研并核查当前任务需要的真实信息，给出来源、适用范围与尚未确认的部分。"

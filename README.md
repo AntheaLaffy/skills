@@ -8,7 +8,13 @@
 
 - [`codemap/`](codemap/)：生成和维护分层 `CODEMAP.md`，按任务路由代码阅读范围。
 - [`project-maintenance/`](project-maintenance/)：在功能开发、重构和后端迁移后同步代码地图、实现、测试、构建入口和文档，并处理已退役内容。
+- [`state-single-source/`](state-single-source/)：状态设计——把进度/统计/清单类事实收成唯一来源，用脚本生成派生文本并校验漂移，适用于文档工程、小说进度、看板与里程碑；与 `project-maintenance` 分工：后者管地图/退役/契约验证，前者管派生数字。
 - [`performance-gradient-optimization/`](performance-gradient-optimization/)：用可复现实验优化延迟、吞吐、CPU、内存、I/O、能耗和成本。
+- [`baidu-drive/`](baidu-drive/)：百度网盘命令行操作与本地脚本。
+- [`sillytavern-novel-craft/`](sillytavern-novel-craft/)：SillyTavern 小说创作与世界书工作流。
+- `exam-authoring/`、`exam-teaching/`：命题、教学与批改。
+- `research-verification/`：事实调研与来源核查。
+- `study-planning/`、`study-diagnosis/`、`study-memory/`、`tomato-todo/`：学习安排、诊断、记忆与番茄 Todo 入口。
 - [`the missing semester/`](the%20missing%20semester/)：The Missing Semester 主题的中文学习型 skills 与练习资料。
 
 ## 安装
@@ -16,13 +22,18 @@
 所有 agent 的用户级 skills 目录统一链接到本仓库，例如：
 
 ```bash
-ln -s /home/fuurin/code/skills ~/.codex/skills
-ln -s /home/fuurin/code/skills ~/.claude/skills
+ln -s "$HOME/code/skills" "$HOME/.codex/skills"
+ln -s "$HOME/code/skills" "$HOME/.agents/skills"
+ln -s "$HOME/code/skills" "$HOME/.claude/skills"
+ln -s "$HOME/code/skills" "$HOME/.gemini/skills"
+ln -s "$HOME/code/skills" "$HOME/.config/opencode/skills"
 ```
 
-上述命令要求目标路径不存在；已有目录须先清理，避免创建嵌套链接。其他 agent 同样将其用户级 skills 路径直接链接到这里，不再维护独立副本。
+上述命令要求目标路径不存在；已有目录须先合并内容并移开，避免创建嵌套链接。其他 agent 同样将其用户级 skills 路径直接链接到这里，不再维护独立副本。
 
 `the missing semester/` 保留课程源码结构，根目录的相对符号链接让只扫描一级目录的工具也能发现这些 skills。`.system/` 是 Codex 管理的内置 skills，不纳入版本控制。插件内置 skills 与各项目专属 skills 仍由各自来源管理。
+
+`exam-authoring/references/local-library.md` 与 `tomato-todo/references/local-context.md` 是本机导航，保留在本机且已忽略，不随公开仓库发布；克隆到新机器时按实际资料和连接自行建立。
 
 ## fframes 上游技能
 
