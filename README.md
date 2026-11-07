@@ -9,6 +9,7 @@
 - [`codemap/`](codemap/)：生成和维护分层 `CODEMAP.md`，按任务路由代码阅读范围。
 - [`project-maintenance/`](project-maintenance/)：在功能开发、重构和后端迁移后同步代码地图、实现、测试、构建入口和文档，并处理已退役内容。
 - [`state-single-source/`](state-single-source/)：状态设计——把进度/统计/清单类事实收成唯一来源，用脚本生成派生文本并校验漂移，适用于文档工程、小说进度、看板与里程碑；与 `project-maintenance` 分工：后者管地图/退役/契约验证，前者管派生数字。
+- [`parallel-agent-development/`](parallel-agent-development/)：用 dsh 三级代理并行开发——二级代理各自 git worktree 分叉隔离、完成后合并，三级及更深可共享或再分叉；并说明上下级/兄弟代理的通信机制。`codemap`、`project-maintenance`、`state-single-source` 涉及多处独立改动时须在此模式下并行分工。
 - [`performance-gradient-optimization/`](performance-gradient-optimization/)：用可复现实验优化延迟、吞吐、CPU、内存、I/O、能耗和成本。
 - [`baidu-drive/`](baidu-drive/)：百度网盘命令行操作与本地脚本。
 - [`sillytavern-novel-craft/`](sillytavern-novel-craft/)：SillyTavern 小说创作与世界书工作流。
