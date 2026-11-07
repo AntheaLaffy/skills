@@ -1,8 +1,7 @@
 ---
 name: parallel-agent-development
 description: >
-  用 dsh 三级代理并行开发：主代理按互不重叠的文件划分任务，二级代理各自 git worktree 分叉隔离改动、完成后合并；三级及更深可在同一 worktree 内协作或再分叉；并说明上下级/兄弟代理的通信机制（subagent/subagent_fork/agent_message/send_message/list_agents/interrupt_agent）。适用于并行化大改动，或决定各委托层级的 worktree 隔离与消息路由。
-  Use when parallelizing a large change across multiple subagents in DeepSeek Harness, deciding git worktree isolation per delegation depth, or wiring parent-child agent communication.
+  用 dsh 三级代理并行开发：二级代理各自 git worktree 分叉隔离改动、完成后合并，三级及更深可共享或再分叉，并说明上下级/兄弟代理通信机制（agent_message/send_message/list_agents 等）。Use when parallelizing a large change across subagents, deciding worktree isolation per delegation depth, or wiring parent-child agent messaging.
 ---
 
 # 并行代理开发

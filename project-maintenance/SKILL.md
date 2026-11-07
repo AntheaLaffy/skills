@@ -7,23 +7,23 @@ description: Maintain code maps, implementations, tests, build routes and docs a
 
 把维护作为当前开发任务的完成条件：同步受影响的地图，处理已替代实现与专属资源，验证当前产品契约。在本次授权范围内完成工作；支持平台、外部接口或任务范围改变时先说明具体影响。
 
-本技能对代码、地图、测试与文档做反复双向核对，串行同步会极大拖慢开发：涉及多处独立改动时必须在并行代理模式下分工，隔离、合并与通信规则见 `$parallel-agent-development`。
+本技能对代码、地图、测试与文档做反复双向核对，串行同步会极大拖慢开发：涉及多处独立改动时必须在并行代理模式下分工，隔离、合并与通信规则见 `parallel-agent-development`。
 
 ## 定位范围并取得事实
 
 读取项目规则、当前需求和已有地图，保留语言、平台、引擎及源码所有权约定。结合 Git 已提交、暂存、未暂存和新增文件区分本次任务及其他未完成工作。链接源码、子模块和独立 checkout 在各自真实目录核对。
 
 ```bash
-python3 <skill-dir>/scripts/maintenance_state.py inspect --root <project-root> --json --max-paths 20
+python3 scripts/maintenance_state.py inspect --root <project-root> --json --max-paths 20
 ```
 
 脚本比较上次审查记录与当前内容；首次报告是待建立基线，全部 added 不等于本次新增。分页保留完整计数与状态，按[验证参考](references/verification.md)读取后续项。没有 Git 时按显式目录审查；只有项目创建任务已授权初始化仓库时才建立 Git。
 
-新项目随首个可运行实现建立地图。已有 CODEMAP 时从 Task Guide/Domain 定位目标，大文件使用 Feature Index；按契约影响读取消费者。地图格式、范围和父子路由归可用的 `$codemap` 或项目既有规范；日常维护只读取匹配部分，首次建图或调整格式时再加载相应生成说明。
+新项目随首个可运行实现建立地图。已有 CODEMAP 时从 Task Guide/Domain 定位目标，大文件使用 Feature Index；按契约影响读取消费者。地图格式、范围和父子路由归可用的 `codemap` 或项目既有规范；日常维护只读取匹配部分，首次建图或调整格式时再加载相应生成说明。
 
 工具提取差异、路径、引用和结构，agent 判断职责、影响与维护操作。先取计数、路径和行范围，再读必要内容。结构搜索/统一改写按需使用 ast-grep，符号关系使用现有语言服务器；批量核对或自建工具时读[自动化参考](references/automation.md)。
 
-状态类数字（进度、章数、覆盖率、版本、里程碑）的单一来源、生成块与漂移校验归 `$state-single-source`；本技能只负责让文档与地图跟得上代码，不重复设计那套生成机制。反之，代码地图、退役判断、契约验证不归它。
+状态类数字（进度、章数、覆盖率、版本、里程碑）的单一来源、生成块与漂移校验归 `state-single-source`；本技能只负责让文档与地图跟得上代码，不重复设计那套生成机制。反之，代码地图、退役判断、契约验证不归它。
 
 ## 增删改一起评估
 
@@ -45,19 +45,19 @@ python3 <skill-dir>/scripts/maintenance_state.py inspect --root <project-root> -
 - 先查调用者、构建目标、平台及公开契约；动态注册、外部导出、FFI、汇编和函数指针需要核对真实消费者。仅有无本地文本引用、文件年龄、失败/跳过或低覆盖率都不足以删除；报告剩余不确定性。
 - 退役同时处理专属测试、fixture、依赖、配置、文档、示例和导航；核对共享资源与反向链接。Git 留存历史，避免累积 `old/`、`v1/`、`backup/` 副本。
 - 合并重复或仅验证 mock 自身的测试，保留真实回归、不同输入、平台和边界断言；失效需求的测试按当前契约退役或重写。新验证针对实际行为/故障，不能靠弱化断言、放宽误差或重录错误快照使检查通过。
-- 更新受影响 README、运行说明、命令、路径、链接，合并重复说明；以当前契约与消费者判断文档是否应删除。状态类数字不在这里手改——有生成器的走 `$state-single-source`，没有就先别在文档里抄第二份。
+- 更新受影响 README、运行说明、命令、路径、链接，合并重复说明；以当前契约与消费者判断文档是否应删除。状态类数字不在这里手改——有生成器的走 `state-single-source`，没有就先别在文档里抄第二份。
 
 ## 验证并记录
 
 按[验证与退役判据](references/verification.md)选择涉及的语言、接口、UI 或推理验证，复用项目入口。有效审查和验证完成后才记录：
 
 ```bash
-python3 <skill-dir>/scripts/maintenance_state.py record --root <project-root> --reviewed
-python3 <skill-dir>/scripts/maintenance_state.py check --root <project-root>
+python3 scripts/maintenance_state.py record --root <project-root> --reviewed
+python3 scripts/maintenance_state.py check --root <project-root>
 ```
 
 `--reviewed` 表示 agent 已实际完成审查和必要验证；状态保存在 `.project-maintenance/state.json`。指纹一致只说明之后没有受监测变化，不能替代地图语义或产品正确性。未闭合改动、未知失败及未验证的其他源码树须如实报告，不能为让检查变绿而重录。
 
-这份指纹记录与 `$state-single-source` 的生成块是两回事：指纹回答“审查后有没有变化”，生成块回答“文档里的数字是不是算出来的”。不要拿其中一个冒充另一个。
+这份指纹记录与 `state-single-source` 的生成块是两回事：指纹回答“审查后有没有变化”，生成块回答“文档里的数字是不是算出来的”。不要拿其中一个冒充另一个。
 
 最终简述地图同步、增删改及不适用依据、退役/保留理由、实际验证结果和剩余缺口。

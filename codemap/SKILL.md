@@ -11,7 +11,7 @@ Maintain hierarchical navigation maps so agents reach relevant code through **Ta
 
 - **Learning**: source remains read-only; maps guide study.
 - **Maintenance**: preserve existing scope, format and navigation settings; update only affected maps and routes. Infer the mode from the task, asking only when the distinction matters and is unresolved.
-- This skill owns map structure, scope and navigation. For implementation/test/document retirement, product verification and reviewed-state tracking, use available `$project-maintenance` guidance or the project's existing maintenance workflow. Load only guidance needed for the current task.
+- This skill owns map structure, scope and navigation. For implementation/test/document retirement, product verification and reviewed-state tracking, use available `project-maintenance` guidance or the project's existing maintenance workflow. Load only guidance needed for the current task.
 
 ## Navigate before reading
 
@@ -47,4 +47,4 @@ Return counts, paths, symbols and necessary ranges before full content. Keep lar
 - Pure internal equivalent changes may leave maps intact after checking indexed meaning and ranges. Completion reports applicable operations, evidence and remaining gaps; timestamps and successful builds alone do not establish freshness.
 - First generation installs one short navigation block following [project protocol](references/protocol.md); later edits update it only when navigation rules change. Preserve other project instructions.
 
-Parallel agents are required for this skill: assign independent directory ownership and pass only needed context so the bidirectional source↔map sync never serializes across the whole tree. Each depth-1 subagent works in its own git worktree and merges back; coordination, worktree and communication rules live in `$parallel-agent-development`. A single agent is fine only when the affected set is small enough that serial sync does not dominate.
+Parallel agents are required for this skill: assign independent directory ownership and pass only needed context so the bidirectional source↔map sync never serializes across the whole tree. Each depth-1 subagent works in its own git worktree and merges back; coordination, worktree and communication rules live in `parallel-agent-development`. A single agent is fine only when the affected set is small enough that serial sync does not dominate.

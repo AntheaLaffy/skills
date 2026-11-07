@@ -1,16 +1,12 @@
 ---
 name: state-single-source
 description: >
-  状态设计：让进度、统计、清单类事实只在唯一来源定义，由脚本派生到各处并校验漂移，
-  避免“改一处要同步五个文件”。适用于小说/文档工程的进度段、README 与 AGENTS 状态、
-  看板、里程碑表、字数、覆盖率、版本号。Use when documents disagree with each other or
-  with reality, when one fact requires editing many files, or when designing progress and
-  status tracking. 触发于「进度对不上/文档太乱/数字分散/设计状态与单一事实来源」。
+  状态设计：进度、统计、清单类事实只在唯一来源定义，由脚本派生到各处并校验漂移，避免“改一处要同步五个文件”。Use when one fact is copied across many files, documents disagree with each other or with reality, or when designing progress and status tracking. 触发于「进度对不上/文档太乱/数字分散」。
 ---
 
 # 状态设计与单一事实来源
 
-本技能对进度/统计/清单类数字做生成与漂移校验，涉及多处独立改动时必须在并行代理模式下分工，避免串行同步拖慢开发；隔离、合并与通信规则见 `$parallel-agent-development`。
+本技能对进度/统计/清单类数字做生成与漂移校验，涉及多处独立改动时必须在并行代理模式下分工，避免串行同步拖慢开发；隔离、合并与通信规则见 `parallel-agent-development`。
 
 ## 先分清状态和规则
 
@@ -21,7 +17,7 @@ description: >
 
 ## 与 project-maintenance 的分工
 
-| 归本技能 | 归 `$project-maintenance` |
+| 归本技能 | 归 `project-maintenance` |
 |---|---|
 | 进度/统计/清单类数字的唯一来源与生成 | 代码地图、导航路由 |
 | 派生文本的生成块、幂等、漂移校验 | 契约/UI/推理验证，退役与临时层清理 |
@@ -90,7 +86,7 @@ description: >
 - 生成文本与改造前手写文本事实一致。
 - 下游构建/发布仍通过，且产物统计与生成块一致。
 
-产品契约、UI、推理正确性不在这里验，那是 `$project-maintenance` 的事；本技能只证明“文档里的数是从事实源算出来的”。
+产品契约、UI、推理正确性不在这里验，那是 `project-maintenance` 的事；本技能只证明“文档里的数是从事实源算出来的”。
 
 ## 参考
 

@@ -6,7 +6,7 @@ Generate and maintain hierarchical `CODEMAP.md` indexes so agents locate code by
 
 ## Usage
 
-Ask a skill-capable agent to “index this project” or “refresh the affected CODEMAPs.” Learning keeps source read-only; maintenance inherits current scope/format and updates maps incrementally. Ask about mode or scope only when unresolved. Parallel agents depend on authorization and actual benefit.
+Ask a skill-capable agent to “index this project” or “refresh the affected CODEMAPs.” Learning keeps source read-only; maintenance inherits current scope/format and updates maps incrementally. Ask about mode or scope only when unresolved. Multi-area changes run under parallel agents, one git worktree per depth-1 subagent, per `parallel-agent-development`.
 
 Install the complete folder from the repository root, for example:
 

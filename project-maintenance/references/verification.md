@@ -31,9 +31,9 @@
 `scripts/maintenance_state.py` 仅依赖 Python 标准库和 Git，支持包括尚无首次提交的 Git 工作树：
 
 ```bash
-python3 <skill-dir>/scripts/maintenance_state.py inspect --root . --json
-python3 <skill-dir>/scripts/maintenance_state.py record --root . --reviewed
-python3 <skill-dir>/scripts/maintenance_state.py check --root .
+python3 scripts/maintenance_state.py inspect --root . --json
+python3 scripts/maintenance_state.py record --root . --reviewed
+python3 scripts/maintenance_state.py check --root .
 ```
 
 agent 首次读取可用 `inspect --root . --json --max-paths 20`；只取计数用 `--max-paths 0`。限量 JSON 的 `change_counts` 和 `separate_checkout_count` 始终覆盖完整扫描，`changes` 与 `separate_checkouts` 只包含本页。分页顺序为地图的增/改/删、其他文件的增/改/删、独立 checkout，各组按路径排序。
