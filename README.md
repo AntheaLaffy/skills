@@ -9,14 +9,32 @@
 - [`codemap/`](codemap/)：生成和维护分层 `CODEMAP.md`，按任务路由代码阅读范围。
 - [`project-maintenance/`](project-maintenance/)：在功能开发、重构和后端迁移后同步代码地图、实现、测试、构建入口和文档，并处理已退役内容。
 - [`state-single-source/`](state-single-source/)：状态设计——把进度/统计/清单类事实收成唯一来源，用脚本生成派生文本并校验漂移，适用于文档工程、小说进度、看板与里程碑；与 `project-maintenance` 分工：后者管地图/退役/契约验证，前者管派生数字。
-- [`parallel-agent-development/`](parallel-agent-development/)：用 dsh 三级代理并行开发——二级代理各自 git worktree 分叉隔离、完成后合并，三级及更深可共享或再分叉；并说明上下级/兄弟代理的通信机制。`codemap`、`project-maintenance`、`state-single-source` 涉及多处独立改动时须在此模式下并行分工。
 - [`performance-gradient-optimization/`](performance-gradient-optimization/)：用可复现实验优化延迟、吞吐、CPU、内存、I/O、能耗和成本。
 - [`baidu-drive/`](baidu-drive/)：百度网盘命令行操作与本地脚本。
 - [`sillytavern-novel-craft/`](sillytavern-novel-craft/)：SillyTavern 小说创作与世界书工作流。
-- `exam-authoring/`、`exam-teaching/`：命题、教学与批改。
 - `research-verification/`：事实调研与来源核查。
-- `study-planning/`、`study-diagnosis/`、`study-memory/`、`tomato-todo/`：学习安排、诊断、记忆与番茄 Todo 入口。
 - [`the missing semester/`](the%20missing%20semester/)：The Missing Semester 主题的中文学习型 skills 与练习资料。
+
+## 随插件发布的技能
+
+这些技能的正文已经收进对应插件，插件更新即技能更新，本仓库不再保存副本：
+
+| 技能 | 来源 |
+| --- | --- |
+| `tomato-todo`、`exam-teaching`、`exam-authoring`、`study-planning`、`study-diagnosis`、`study-memory` | `~/code/todo/.agents/worktrees/tomato-ts-rewrite/plugin/skills/`（`@local/tomato-dsh`） |
+| `parallel-agent-development` | `~/code/dsh-three-level-agent/skills/` (`dsh-three-level-agent`) |
+
+本机要给 Codex、Claude Code 等非 DSH agent 用同一份内容时，跑对应插件的
+`link-skills.mjs`（默认链到 `~/.agents/skills`，链接指向插件包，之后更新同样生效）：
+
+```bash
+node ~/code/todo/.agents/worktrees/tomato-ts-rewrite/plugin/link-skills.mjs
+node ~/code/dsh-three-level-agent/link-skills.mjs
+```
+
+这样本仓库里出现的这 7 个目录是符号链接；它们已写进 `.gitignore`，不入库，换机器时
+重新跑上面的命令即可。`codemap`、`project-maintenance`、`state-single-source` 里提到
+`parallel-agent-development` 时，指的就是插件包中的那一份。
 
 ## 安装
 
@@ -30,7 +48,7 @@ ln -s "$HOME/code/skills" "$HOME/.gemini/skills"
 ln -s "$HOME/code/skills" "$HOME/.config/opencode/skills"
 ```
 
-上述命令要求目标路径不存在；已有目录须先合并内容并移开，避免创建嵌套链接。其他 agent 同样将其用户级 skills 路径直接链接到这里，不再维护独立副本。
+上述命令要求目标路径不存在；已有目录须先合并内容并移开，避免创建嵌套链接。其他 agent 同样将其用户级 skills 路径直接链接到这里，不再维护独立副本。反过来，随插件发布的技能由插件的 `link-skills.mjs` 链接进来，见上一节。
 
 `the missing semester/` 保留课程源码结构，根目录的相对符号链接让只扫描一级目录的工具也能发现这些 skills。`.system/` 是 Codex 管理的内置 skills，不纳入版本控制。插件内置 skills 与各项目专属 skills 仍由各自来源管理。
 

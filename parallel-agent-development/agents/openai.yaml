@@ -1,4 +1,0 @@
-interface:
-  display_name: "Parallel Agent Development"
-  short_description: "Parallelize work across dsh subagents with git worktrees"
-  default_prompt: "Use $parallel-agent-development to split this change across parallel subagents with per-depth git worktree isolation and parent-child messaging."
